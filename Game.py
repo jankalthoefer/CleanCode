@@ -4,10 +4,6 @@
 import UI
 
 # extracted from printlines to have it interchangable
-CROSS = "X"
-DOT = "O"
-
-
 class Game:
     ui = None
     field = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
@@ -29,10 +25,10 @@ class Game:
             self.ui.draw_line()
             if self.current_player == 1:
                 self.ui.draw_players_turn(1)
-                self.take_turn(CROSS)
+                self.take_turn(1)
             else:
                 self.ui.draw_players_turn(2)
-                self.take_turn(DOT)
+                self.take_turn(2)
             if self.moves >= 8:
                 self.set_tie();
             self.moves += 1
@@ -50,8 +46,7 @@ class Game:
     pass
   
 
-    def set_Field(self, columnNumber, rowNumber, newChar):
-        # should be handled by ui
+    def set_Field(self, columnNumber, rowNumber, player_number):
         try:
             columnNumber = int(columnNumber)
             rowNumber = int(rowNumber)
@@ -63,7 +58,7 @@ class Game:
         if ((columnNumber <= 3) or (columnNumber <= 1)) and ((rowNumber <= 3) or (rowNumber <= 1)):
             if self.field[rowNumber - 1][columnNumber - 1] is " ":
                 # Valid Input Set Field and draw again
-                self.field[rowNumber - 1][columnNumber - 1] = newChar
+                self.field[rowNumber - 1][columnNumber - 1] = player_number
                 self.ui.draw_field(self.field)
                 
                 

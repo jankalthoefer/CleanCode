@@ -2,9 +2,17 @@
 # coding=utf-8
 
 class UI:
+    player_character = ["👽","🍋"]
+
     def __init__(self):
         self.draw_opener()
 
+    def get_player_character(self, player_number_string):
+        try:
+            player_number = int(player_number_string)
+            return self.player_character[player_number-1]
+        except ValueError:
+            return ' '
 
     def draw_opener(self):
         print("Welcome to TikTakToe \n")
@@ -12,6 +20,7 @@ class UI:
     # user input
     def get_input_column(self):
         return input("Column>  ")
+        
 
     def get_input_row(self):
         return input("Row>  ")
@@ -23,7 +32,7 @@ class UI:
         print("   ⎡-----⏉ -----⏉ ----⎤")
         for row in field:
             print " " + str(rowcount) + " │",
-            print " " + row[0] + "      " + row[1] + "     " + row[2],
+            print " " + self.get_player_character(row[0]) + "      " + self.get_player_character(row[1]) + "     " + self.get_player_character(row[2]),
             print(" ⎟")
             rowcount += 1
             if rowcount < 4:
