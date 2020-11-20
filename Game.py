@@ -1,28 +1,34 @@
 # !/usr/bin/python
 # coding=utf-8
 
-# 
-CROSS = "👩‍"
-DOT = "😺"
+import UI
+
+# extracted from printlines to have it interchangable
+CROSS = "X"
+DOT = "O"
 
 
 class Game:
+    ui = None
     field = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
+    # player
     playerOne = True
     win = False
     tie = False
     moves = 0
     def __init__(self):
-        print("Welcome to TikTakToe \n")
+        self.ui = UI.UI()
+        
 
-        self.draw_field()
+        self.ui.draw_field(self.field)
+
         while not self.win and not self.tie:
-            print("\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯")
+            self.ui.draw_line()
             if self.playerOne == True:
-                print("Player One Input")
+                self.ui.draw_players_turn(1)
                 self.take_turn(CROSS)
             else:
-                print("Player Two Input")
+                self.ui.draw_players_turn(2)
                 self.take_turn(DOT)
             if self.moves >= 8:
                 self.tie = True
@@ -31,57 +37,43 @@ class Game:
 
         if not self.tie:
             if not self.playerOne:
-                print("!!! Player One Wins !!!")
+                self.ui.draw_players_win(1)
             else:
-                print("!!! Player Two Wins !!!")
-        else:
-            print("Its a tie")
-
-
+                self.ui.draw_players_win(2)
+        else: 
+            self.ui.draw_tie()      
     pass
-
-    def draw_field(self):
-        rowcount = 1
-        print("     1       2     3")
-        print("   ⎡-----⏉ -----⏉ ----⎤")
-        for row in self.field:
-            print " " + str(rowcount) + " │",
-            print " " + row[0] + "      " + row[1] + "     " + row[2],
-            print(" ⎟")
-            rowcount += 1
-            if rowcount < 4:
-                print("   ├⎯⎯⎯⎯⎯┼⎯⎯⎯⎯⎯⎯┼⎯⎯⎯⎯⎯┤")
-            else:
-                print("   ⎣-----⏊ -----⏊ ----⎦")
-
-    pass
+  
 
     def set_Field(self, columnNumber, rowNumber, newChar):
+        # should be handled by ui
         try:
             columnNumber = int(columnNumber)
             rowNumber = int(rowNumber)
         except ValueError:
-            print("Invalid Input, Input should be numbers only")
-            pass  # it was a string, not an int.
+            # it was a string, not an int.
+            self.ui.draw_invalid_input
+            pass  
 
         if ((columnNumber <= 3) or (columnNumber <= 1)) and ((rowNumber <= 3) or (rowNumber <= 1)):
             if self.field[rowNumber - 1][columnNumber - 1] is " ":
                 # Valid Input Set Field and draw again
                 self.field[rowNumber - 1][columnNumber - 1] = newChar
-                self.draw_field()
+                self.ui.draw_field(self.field)
                 # Change Players
                 self.playerOne = not self.playerOne
             else:
-                print("Field already occupied ")
+                self.ui.draw_field_occupied()
         else:
-            print("Invalid Numbers")
+            self.ui.draw_invalid_number()
 
     pass
 
     def take_turn(self, playersChar):
-        columnInput = input("Column>  ");
-        rowInput = input("Row>  ");
-        print("‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
+        columnInput = self.ui.get_input_column()
+        rowInput = self.ui.get_input_row()
+
+        self.ui.draw_line
         self.set_Field(columnInput, rowInput, playersChar)
 
     def check_win(self):
@@ -97,7 +89,7 @@ class Game:
                 return
 
         if self.field[0][column] is self.field[1][column] is self.field[2][column]:
-            print("| Win")
+            #print("| Win")
             self.win = True
             return
 
@@ -107,7 +99,7 @@ class Game:
                 return
 
         if self.field[row][0] is self.field[row][1] is self.field[row][2]:
-            print("- Win")
+            #print("- Win")
             self.win = True
             return
 
@@ -118,7 +110,7 @@ class Game:
                 return
 
         if self.field[0][0] is self.field[1][1] is self.field[2][2]:
-            print("\ Win")
+            #print("\ Win")
             self.win = True
             return
 
@@ -127,11 +119,7 @@ class Game:
         if self.field[0][2] is " " or self.field[1][1] is " " or self.field[2][0] is " ":
             return
         if self.field[0][2] is self.field[1][1] is self.field[2][0]:
-            print("/ Win")
+            #print("/ Win")
             self.win = True
             return
 #end Class
-
-#main
-
-game = Game()
