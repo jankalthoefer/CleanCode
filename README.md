@@ -1,7 +1,7 @@
 # CleanCode - VWmS ESA 
 
 The original TikTakToe from the initial commit was from a previous excercise in Data Science.
-I started with that version and improved the code cleaness with every commit.
+I started with that version and improved the code cleanness with every commit.
 
 The changes in each steps are rougly described below.
 
