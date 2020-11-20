@@ -11,10 +11,12 @@ DOT = "O"
 class Game:
     ui = None
     field = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
-    # player
-    playerOne = True
+
+    current_player = 1
+
     win = False
     tie = False
+    
     moves = 0
     def __init__(self):
         self.ui = UI.UI()
@@ -24,7 +26,7 @@ class Game:
 
         while not self.win and not self.tie:
             self.ui.draw_line()
-            if self.playerOne == True:
+            if self.current_player == 1:
                 self.ui.draw_players_turn(1)
                 self.take_turn(CROSS)
             else:
@@ -35,8 +37,10 @@ class Game:
             self.moves += 1
             self.check_win()
 
+        # handle game finish in seperate function
         if not self.tie:
-            if not self.playerOne:
+            # when its player 1 turn, player 2 just won the game
+            if self.current_player != 1:
                 self.ui.draw_players_win(1)
             else:
                 self.ui.draw_players_win(2)
@@ -60,8 +64,9 @@ class Game:
                 # Valid Input Set Field and draw again
                 self.field[rowNumber - 1][columnNumber - 1] = newChar
                 self.ui.draw_field(self.field)
-                # Change Players
-                self.playerOne = not self.playerOne
+                
+                
+                self.switch_players()
             else:
                 self.ui.draw_field_occupied()
         else:
@@ -69,12 +74,20 @@ class Game:
 
     pass
 
+    # change current player
+    def switch_players(self):
+        if self.current_player == 1:
+            self.current_player = 2
+        else:
+            self.current_player = 1
+
     def take_turn(self, playersChar):
         columnInput = self.ui.get_input_column()
         rowInput = self.ui.get_input_row()
 
         self.ui.draw_line
         self.set_Field(columnInput, rowInput, playersChar)
+
 
     def check_win(self):
         for i in range(0, 3, 1):
