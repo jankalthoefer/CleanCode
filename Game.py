@@ -14,9 +14,10 @@ class Game:
 
     current_player = 1
 
-    win = False
+    # game state variables
+    game_over = False
     tie = False
-    
+
     moves = 0
     def __init__(self):
         self.ui = UI.UI()
@@ -24,7 +25,7 @@ class Game:
 
         self.ui.draw_field(self.field)
 
-        while not self.win and not self.tie:
+        while not self.game_over:
             self.ui.draw_line()
             if self.current_player == 1:
                 self.ui.draw_players_turn(1)
@@ -33,7 +34,7 @@ class Game:
                 self.ui.draw_players_turn(2)
                 self.take_turn(DOT)
             if self.moves >= 8:
-                self.tie = True
+                self.set_tie();
             self.moves += 1
             self.check_win()
 
@@ -96,13 +97,21 @@ class Game:
         self.check_diagonalOne()
         self.check_diagonalTwo()
 
+
+    # set game states
+    def set_tie(self):
+        self.tie = True
+
+    def set_game_over(self):
+        self.game_over = True
+
+    # check all directions 
     def check_columns(self, column):
         for i in range(0, 3, 1):
             if self.field[i][column] is " ":
                 return
-
         if self.field[0][column] is self.field[1][column] is self.field[2][column]:
-            self.win = True
+            self.set_game_over()
             return
 
     def check_rows(self, row):
@@ -111,7 +120,7 @@ class Game:
                 return
 
         if self.field[row][0] is self.field[row][1] is self.field[row][2]:
-            self.win = True
+            self.set_game_over()
             return
 
     def check_diagonalOne(self):
@@ -121,7 +130,7 @@ class Game:
                 return
 
         if self.field[0][0] is self.field[1][1] is self.field[2][2]:
-            self.win = True
+            self.set_game_over()
             return
 
     def check_diagonalTwo(self):
@@ -129,6 +138,6 @@ class Game:
         if self.field[0][2] is " " or self.field[1][1] is " " or self.field[2][0] is " ":
             return
         if self.field[0][2] is self.field[1][1] is self.field[2][0]:
-            self.win = True
+            self.set_game_over()
             return
 #end Class
