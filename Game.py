@@ -15,14 +15,15 @@ class Game:
     tie = False
 
     moves = 0
+
     def __init__(self):
         self.ui = UI.UI()
-        
-
-        self.ui.draw_field(self.field)
-
+        self.start_game()
+    pass
+    
+    def start_game(self):
         while not self.game_over:
-            self.ui.draw_line()
+            
             if self.current_player == 1:
                 self.ui.draw_players_turn(1)
                 self.take_turn(1)
@@ -31,9 +32,16 @@ class Game:
                 self.take_turn(2)
             if self.moves >= 8:
                 self.set_tie();
+
             self.moves += 1
+            self.ui.draw_line()
+            self.ui.draw_field(self.field)
+
             self.check_win()
 
+        self.handle_game_over()
+
+    def handle_game_over(self):
         # handle game finish in seperate function
         if not self.tie:
             # when its player 1 turn, player 2 just won the game
@@ -42,11 +50,17 @@ class Game:
             else:
                 self.ui.draw_players_win(2)
         else: 
-            self.ui.draw_tie()      
-    pass
-  
+            self.ui.draw_tie()    
 
-    def set_Field(self, columnNumber, rowNumber, player_number):
+    def take_turn(self, playersChar):
+        columnInput = self.ui.get_input_column()
+        rowInput = self.ui.get_input_row()
+
+        self.ui.draw_line
+        self.make_move(columnInput, rowInput, playersChar)
+
+    # sets position and switches player if successful
+    def make_move(self, columnNumber, rowNumber, player_number):
         try:
             columnNumber = int(columnNumber)
             rowNumber = int(rowNumber)
@@ -59,8 +73,6 @@ class Game:
             if self.field[rowNumber - 1][columnNumber - 1] is " ":
                 # Valid Input Set Field and draw again
                 self.field[rowNumber - 1][columnNumber - 1] = player_number
-                self.ui.draw_field(self.field)
-                
                 
                 self.switch_players()
             else:
@@ -77,21 +89,13 @@ class Game:
         else:
             self.current_player = 1
 
-    def take_turn(self, playersChar):
-        columnInput = self.ui.get_input_column()
-        rowInput = self.ui.get_input_row()
-
-        self.ui.draw_line
-        self.set_Field(columnInput, rowInput, playersChar)
-
-
+    # checks each in every direction if a player as three in a row
     def check_win(self):
         for i in range(0, 3, 1):
             self.check_columns(i)
             self.check_rows(i)
         self.check_diagonalOne()
         self.check_diagonalTwo()
-
 
     # set game states
     def set_tie(self):
