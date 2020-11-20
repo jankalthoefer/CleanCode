@@ -102,7 +102,6 @@ class Game:
                 return
 
         if self.field[0][column] is self.field[1][column] is self.field[2][column]:
-            #print("| Win")
             self.win = True
             return
 
@@ -112,7 +111,6 @@ class Game:
                 return
 
         if self.field[row][0] is self.field[row][1] is self.field[row][2]:
-            #print("- Win")
             self.win = True
             return
 
@@ -123,7 +121,6 @@ class Game:
                 return
 
         if self.field[0][0] is self.field[1][1] is self.field[2][2]:
-            #print("\ Win")
             self.win = True
             return
 
@@ -132,7 +129,6 @@ class Game:
         if self.field[0][2] is " " or self.field[1][1] is " " or self.field[2][0] is " ":
             return
         if self.field[0][2] is self.field[1][1] is self.field[2][0]:
-            #print("/ Win")
             self.win = True
             return
 #end Class
