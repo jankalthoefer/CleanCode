@@ -15,7 +15,7 @@ class UI:
             return ' '
 
     def draw_opener(self):
-        print("Welcome to Cleancode \n")
+        print("Welcome to TikTakToe OMG a merge conflict\n")
 
     # user input
     def get_input_column(self):
